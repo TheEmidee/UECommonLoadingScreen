@@ -28,6 +28,9 @@ class COMMONLOADINGSCREEN_API ULoadingScreenManager : public UGameInstanceSubsys
 	GENERATED_BODY()
 
 public:
+    UFUNCTION(BlueprintCallable)
+    void SetForceWorldRendering( const bool force );
+    
 	//~USubsystem interface
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
