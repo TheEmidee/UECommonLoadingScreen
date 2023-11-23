@@ -124,4 +124,13 @@ private:
 
 	/** True when the loading screen is currently being shown */
 	bool bCurrentlyShowingLoadingScreen = false;
+
+	/** Whether world rendering should be forced when the loading screen is active or not */
+	uint8 bForceWorldRendering = false;
 };
+
+FORCEINLINE void ULoadingScreenManager::SetForceWorldRendering( const bool force )
+{
+	bForceWorldRendering = force;
+}
+

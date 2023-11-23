@@ -47,10 +47,10 @@ bool ILoadingProcessInterface::ShouldShowLoadingScreen(UObject* TestObject, FStr
 {
 	if (TestObject != nullptr)
 	{
-		if (ILoadingProcessInterface* LoadObserver = Cast<ILoadingProcessInterface>(TestObject))
+		if (TestObject->Implements<ULoadingProcessInterface>())
 		{
 			FString ObserverReason;
-			if (LoadObserver->ShouldShowLoadingScreen(/*out*/ ObserverReason))
+			if (ILoadingProcessInterface::Execute_K2_ShouldShowLoadingScreen( TestObject, /*out*/ ObserverReason ))
 			{
 				if (ensureMsgf(!ObserverReason.IsEmpty(), TEXT("%s failed to set a reason why it wants to show the loading screen"), *GetPathNameSafe(TestObject)))
 				{
@@ -595,7 +595,7 @@ void ULoadingScreenManager::ChangePerformanceSettings(bool bEnabingLoadingScreen
 	FShaderPipelineCache::SetBatchMode(bEnabingLoadingScreen ? FShaderPipelineCache::BatchMode::Fast : FShaderPipelineCache::BatchMode::Background);
 
 	// Don't bother drawing the 3D world while we're loading
-	GameViewportClient->bDisableWorldRendering = bEnabingLoadingScreen;
+	GameViewportClient->bDisableWorldRendering = bEnabingLoadingScreen && !bForceWorldRendering;
 
 	// Make sure to prioritize streaming in levels if the loading screen is up
 	if (UWorld* ViewportWorld = GameViewportClient->GetWorld())
