@@ -19,6 +19,13 @@ class COMMONLOADINGSCREEN_API ILoadingProcessInterface
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintNativeEvent)
+	bool K2_ShouldShowLoadingScreen(FString& OutReason) const;
+	bool K2_ShouldShowLoadingScreen_Implementation(FString& OutReason) const
+	{
+		return false;
+	}
+    
 	// Checks to see if this object implements the interface, and if so asks whether or not we should
 	// be currently showing a loading screen
 	static bool ShouldShowLoadingScreen(UObject* TestObject, FString& OutReason);
@@ -26,5 +33,6 @@ public:
 	virtual bool ShouldShowLoadingScreen(FString& OutReason) const
 	{
 		return false;
+		return K2_ShouldShowLoadingScreen(OutReason);
 	}
 };
