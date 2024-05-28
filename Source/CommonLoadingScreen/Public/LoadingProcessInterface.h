@@ -32,7 +32,6 @@ public:
 
 	virtual bool ShouldShowLoadingScreen(FString& OutReason) const
 	{
-		return false;
 		return K2_ShouldShowLoadingScreen(OutReason);
 	}
 };
