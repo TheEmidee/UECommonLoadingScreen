@@ -174,9 +174,14 @@ TStatId ULoadingScreenManager::GetStatId() const
 	RETURN_QUICK_DECLARE_CYCLE_STAT(ULoadingScreenManager, STATGROUP_Tickables);
 }
 
-UWorld* ULoadingScreenManager::GetTickableGameObjectWorld() const
+UWorld * ULoadingScreenManager::GetTickableGameObjectWorld() const
 {
-	return GetGameInstance()->GetWorld();
+    return GetGameInstance()->GetWorld();
+}
+
+void ULoadingScreenManager::SetForceHideLoadingScreen( bool force_hide_loading_screen )
+{
+    bForceHideLoadingScreen = force_hide_loading_screen;
 }
 
 void ULoadingScreenManager::RegisterLoadingProcessor(TScriptInterface<ILoadingProcessInterface> Interface)
@@ -419,7 +424,7 @@ bool ULoadingScreenManager::ShouldShowLoadingScreen()
 		// Still need to show it
 		TimeLoadingScreenLastDismissed = -1.0;
 	}
-	else
+	else if( !bForceHideLoadingScreen )
 	{
 		// Don't *need* to show the screen anymore, but might still want to for a bit
 		const double CurrentTime = FPlatformTime::Seconds();
