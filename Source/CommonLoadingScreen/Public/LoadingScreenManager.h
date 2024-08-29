@@ -48,8 +48,8 @@ public:
 		return DebugReasonForShowingOrHidingLoadingScreen;
 	}
 
-    UFUNCTION( BlueprintCallable, Category=LoadinfScreen )
-    void SetForceHideLoadingScreen( bool force_hide_loading_screen );
+	UFUNCTION(BlueprintCallable, Category=LoadingScreen)
+	void SetForceHideLoadingScreen(bool force_hide_loading_screen);
 
 	/** Returns True when the loading screen is currently being shown */
 	bool GetLoadingScreenDisplayStatus() const
@@ -128,5 +128,5 @@ private:
 	/** True when the loading screen is currently being shown */
 	bool bCurrentlyShowingLoadingScreen = false;
 
-    bool bForceHideLoadingScreen = false;
+	bool bForceHideLoadingScreen = false;
 };
