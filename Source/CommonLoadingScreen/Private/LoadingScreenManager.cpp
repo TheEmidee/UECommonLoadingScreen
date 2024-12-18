@@ -497,8 +497,20 @@ void ULoadingScreenManager::ShowLoadingScreen()
 
 		LoadingScreenVisibilityChanged.Broadcast(/*bIsVisible=*/ true);
 
-		// Create the loading screen widget
-		TSubclassOf<UUserWidget> LoadingScreenWidgetClass = Settings->LoadingScreenWidget.TryLoadClass<UUserWidget>();
+		TSubclassOf< UUserWidget > LoadingScreenWidgetClass = Settings->LoadingScreenWidget.TryLoadClass< UUserWidget >();
+
+	    auto * world = GetWorld();
+        auto world_soft_path = FSoftObjectPath( world );
+        world_soft_path.SetPath( UWorld::RemovePIEPrefix( world_soft_path.GetAssetPath().ToString() ) );
+
+		for ( const auto & [ world_path, widget ] : Settings->MapSpecificLoadingScreenWidget )
+		{
+            if ( world_path.ToSoftObjectPath() == world_soft_path )
+            {
+                LoadingScreenWidgetClass = widget.LoadSynchronous();
+            }
+		}
+		
 		if (UUserWidget* UserWidget = UUserWidget::CreateWidgetInstance(*LocalGameInstance, LoadingScreenWidgetClass, NAME_None))
 		{
 			LoadingScreenWidget = UserWidget->TakeWidget();
