@@ -508,6 +508,7 @@ void ULoadingScreenManager::ShowLoadingScreen()
             if ( world_path.ToSoftObjectPath() == world_soft_path )
             {
                 LoadingScreenWidgetClass = widget.LoadSynchronous();
+		break;
             }
 		}
 		
