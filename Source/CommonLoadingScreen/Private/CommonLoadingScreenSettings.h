@@ -26,6 +26,10 @@ public:
 	UPROPERTY(config, EditAnywhere, Category=Display, meta=(MetaClass="/Script/UMG.UserWidget"))
 	FSoftClassPath LoadingScreenWidget;
 
+	// The widget to load for the loading screen.
+    UPROPERTY( config, EditAnywhere, Category = Display, meta = ( MetaClass = "/Script/UMG.UserWidget" ) )
+    TMap< TSoftObjectPtr< UWorld >, TSoftClassPtr< UUserWidget> > MapSpecificLoadingScreenWidget;
+
 	// The z-order of the loading screen widget in the viewport stack
 	UPROPERTY(config, EditAnywhere, Category=Display)
 	int32 LoadingScreenZOrder = 10000;
