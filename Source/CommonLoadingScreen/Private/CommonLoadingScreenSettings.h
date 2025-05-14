@@ -67,5 +67,8 @@ public:
 	// (useful when iterating on loading screens)
 	UPROPERTY(config, EditAnywhere, Category=Configuration)
 	bool ForceTickLoadingScreenEvenInEditor = true;
+
+	UPROPERTY(config, EditAnywhere, Category=Configuration)
+    bool bUseMoviePlayerLoadingScreen = false;
 };
 

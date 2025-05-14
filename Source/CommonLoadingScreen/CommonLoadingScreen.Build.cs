@@ -42,7 +42,8 @@ public class CommonLoadingScreen : ModuleRules
 				"PreLoadScreen",
 				"RenderCore",
 				"DeveloperSettings",
-				"UMG"
+				"UMG",
+				"MoviePlayer"
 			}
 			);
 		

@@ -24,6 +24,7 @@
 #include "CommonLoadingScreenSettings.h"
 
 //@TODO: Used as the placeholder widget in error cases, should probably create a wrapper that at least centers it/etc...
+#include "MoviePlayer.h"
 #include "Widgets/Images/SThrobber.h"
 #include "Blueprint/UserWidget.h"
 
@@ -125,13 +126,20 @@ public:
 //////////////////////////////////////////////////////////////////////
 // ULoadingScreenManager
 
-void ULoadingScreenManager::Initialize(FSubsystemCollectionBase& Collection)
+void ULoadingScreenManager::Initialize( FSubsystemCollectionBase & Collection )
 {
-	FCoreUObjectDelegates::PreLoadMapWithContext.AddUObject(this, &ThisClass::HandlePreLoadMap);
-	FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &ThisClass::HandlePostLoadMap);
+    FCoreUObjectDelegates::PreLoadMapWithContext.AddUObject( this, &ThisClass::HandlePreLoadMap );
+    FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject( this, &ThisClass::HandlePostLoadMap );
 
-	const UGameInstance* LocalGameInstance = GetGameInstance();
-	check(LocalGameInstance);
+    const UGameInstance * LocalGameInstance = GetGameInstance();
+    check( LocalGameInstance );
+
+    const UCommonLoadingScreenSettings * Settings = GetDefault< UCommonLoadingScreenSettings >();
+
+    if ( Settings->bUseMoviePlayerLoadingScreen && IsMoviePlayerEnabled() )
+    {
+        GetMoviePlayer()->OnPrepareLoadingScreen().AddUObject( this, &ThisClass::PrepareLoadingScreen );
+    }
 }
 
 void ULoadingScreenManager::Deinitialize()
@@ -203,7 +211,24 @@ void ULoadingScreenManager::UnregisterLoadingProcessor(TScriptInterface<ILoading
 	ExternalLoadingProcessors.Remove(Interface.GetObject());
 }
 
-void ULoadingScreenManager::HandlePreLoadMap(const FWorldContext& WorldContext, const FString& MapName)
+void ULoadingScreenManager::SetMoviePlayerLoadingScreen( TSharedPtr<SWidget> Widget )
+{
+    MoviePlayerWidget = Widget;
+}
+
+void ULoadingScreenManager::PrepareLoadingScreen()
+{
+    FLoadingScreenAttributes LoadingScreen;
+    LoadingScreen.MinimumLoadingScreenDisplayTime = 2.0f;
+    LoadingScreen.bAutoCompleteWhenLoadingCompletes = true;
+    LoadingScreen.bMoviesAreSkippable = false;
+    LoadingScreen.bWaitForManualStop = false;
+    LoadingScreen.WidgetLoadingScreen = MoviePlayerWidget;
+
+    GetMoviePlayer()->SetupLoadingScreen( LoadingScreen );
+}
+
+void ULoadingScreenManager::HandlePreLoadMap( const FWorldContext & WorldContext, const FString & MapName )
 {
 	if (WorldContext.OwningGameInstance == GetGameInstance())
 	{

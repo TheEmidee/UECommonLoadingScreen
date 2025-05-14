@@ -63,8 +63,11 @@ public:
 
 	void RegisterLoadingProcessor(TScriptInterface<ILoadingProcessInterface> Interface);
 	void UnregisterLoadingProcessor(TScriptInterface<ILoadingProcessInterface> Interface);
+
+	void SetMoviePlayerLoadingScreen( TSharedPtr< SWidget > Widget );
 	
 private:
+    void PrepareLoadingScreen();
 	void HandlePreLoadMap(const FWorldContext& WorldContext, const FString& MapName);
 	void HandlePostLoadMap(UWorld* World);
 
@@ -129,4 +132,6 @@ private:
 	bool bCurrentlyShowingLoadingScreen = false;
 
 	bool bForceHideLoadingScreen = false;
+
+	TSharedPtr< SWidget > MoviePlayerWidget;
 };
